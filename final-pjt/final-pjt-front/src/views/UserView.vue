@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>홈 뷰</h1>
+    <h1>프로필 뷰</h1>
   </div>
 </template>
 
