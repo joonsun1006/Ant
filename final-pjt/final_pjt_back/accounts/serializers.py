@@ -7,11 +7,13 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 
 
 class CustomRegisterSerializer(RegisterSerializer):
+    username = serializers.CharField(required=True)
     nickname = serializers.CharField(
         required=True,
         max_length=30
     )
     age = serializers.IntegerField(required=True)
+    email = serializers.EmailField(required=True)
     money = serializers.IntegerField(required=False)
     salary = serializers.IntegerField(required=False)
     financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
@@ -34,3 +36,10 @@ class CustomRegisterSerializer(RegisterSerializer):
         adapter.save_user(request, user, self)
         self.custom_signup(request, user)
         return user
+    
+
+class UserCustomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+        read_only_fields= ('username',)

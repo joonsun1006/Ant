@@ -7,19 +7,24 @@
       :article="article"
       :to="{ name: 'articleListItem', params: { article_pk: article.pk } }"
     >
-      Article 개별 항목
+      {{ article.title }}
       <hr>
     </RouterLink>
-    <RouterView />
+  <RouterView />
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useArticleStore } from '@/stores/article'
 import ArticleListItem from '@/components/ArticleListItem.vue';
 
 const store = useArticleStore();
+
+onMounted(() => {
+  store.getArticles()
+})
 
 </script>
 

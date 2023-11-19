@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h1>클릭한 해당 아티클 리스트 아이템</h1>
-    <p>x번 글</p>
-    <p>제목: </p>
+    <p>{{article.id}}번 글</p>
+    <h1>제목: {{ article.title }}</h1>
     <hr>
-    <p>작성일: </p>
-    <p>수정일: </p>
+    <p>작성일: {{ article.created_at }}</p>
+    <p>수정일: {{ article.updated_at }}</p>
     <hr>
-    <p>내용: </p>
+    <p>내용: {{ article.content }}</p>
     <hr>
     <h3>댓글</h3>
     <form @submit.prevent="">

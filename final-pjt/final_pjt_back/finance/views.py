@@ -9,6 +9,7 @@ import requests
 # Create your views here.
 
 FINLIFE_API_KEY = settings.FINLIFE_API_KEY
+EXCHANGE_API_KEY = settings.EXCHANGE_API_KEY
 
 @api_view(['GET'])
 def dbupdate(request):
@@ -215,3 +216,13 @@ def savings(request):
     products = DepositAndSavings.objects.filter(type=2)
     serializer = DepositAndSavingsSerializer(products, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def exchange(request):
+    url = f'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={EXCHANGE_API_KEY}&searchdate=20231117&data=AP01'
+    response = requests.get(url).json()
+    result = {}
+    for li in response:
+        result[li['cur_unit']] = li['deal_bas_r']
+    return Response(result)

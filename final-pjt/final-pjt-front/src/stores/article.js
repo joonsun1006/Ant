@@ -46,13 +46,18 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   const signup = (payload) => {
-    const { username, password1, password2 } = payload;
+    const { username,email, password1, password2,
+      nickname, age, money,
+      salary
+    } = payload;
 
     axios({
       method: 'post',
       url: `${API_URL}/accounts/signup/`,
       data: {
-        username, password1, password2
+        username, email, password1, password2,
+        nickname, age, money,
+        salary,
       }
     })
       .then((res) => {
@@ -62,6 +67,7 @@ export const useArticleStore = defineStore('article', () => {
         // router.push({ name: 'home' });
       })
       .catch((err) => {
+        console.log(payload)
         console.log(err);
       })
   };
@@ -94,6 +100,23 @@ export const useArticleStore = defineStore('article', () => {
     }
   });
 
+  const logout = () => {
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/logout/`,
+    })
+      .then((res) => {
+        token.value = null
+        // router.push({ name: 'ArticleView' })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
-  return { articles, getArticles, createArticle, API_URL, signup, login, token, isLogin }
+  return {
+    articles, getArticles, createArticle,
+    API_URL, signup, login,
+    token, isLogin, logout
+  }
 }, { persist: true })
