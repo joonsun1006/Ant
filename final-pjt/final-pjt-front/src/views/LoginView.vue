@@ -23,6 +23,7 @@ const login = () => {
   const payload = {
     username: username.value,
     password: password.value,
+    
   };
   store.login(payload);
 }

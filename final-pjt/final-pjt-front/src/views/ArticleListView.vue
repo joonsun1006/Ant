@@ -1,16 +1,21 @@
 <template>
   <div>
-    <h1>아티클 리스트</h1>
-    <RouterLink 
+    <h1>글 목록</h1>
+    <div
       v-for="article in store.articles"
       :key="article.pk"
       :article="article"
-      :to="{ name: 'articleListItem', params: { article_pk: article.pk } }"
     >
-      {{ article.title }}
+      {{ article.pk }}
+      <RouterLink 
+        :to="{ name: 'articleListItem', params: { article_pk: article.pk } }"
+      >
+        {{ article.title }}
+      </RouterLink>
+      [{{ article.comment_count }}]
       <hr>
-    </RouterLink>
-  <RouterView />
+      <RouterView />
+    </div>
   </div>
 </template>
 

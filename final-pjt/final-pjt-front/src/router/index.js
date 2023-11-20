@@ -6,6 +6,8 @@ import UserView from '@/views/UserView.vue'
 import ArticleView from '@/views/ArticleView.vue'
 import ArticleListItem from '@/components/ArticleListItem.vue'
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
+import Exchange from '@/components/Exchange.vue'
+import Map from '@/components/Map.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +46,16 @@ const router = createRouter({
       path: '/articleCreate',
       name: 'articleCreate',
       component: ArticleCreateView
+    },
+    {
+      path: '/exchange-rate',
+      name: 'exchange',
+      component: Exchange
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: Map
     },
   ]
 })

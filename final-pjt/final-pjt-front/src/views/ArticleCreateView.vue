@@ -3,10 +3,10 @@
     <h1>게시글 생성 페이지</h1>
     <form @submit.prevent="submitData">
       <label for="title">제목 : </label>
-      <input type="text" id="title" v-model="title">
+      <input type="text" id="title" v-model="title"><br><br>
 
       <label for="content">내용 : </label>
-      <input type="text" id="content" v-model="content">
+      <textarea id="content" v-model="content"></textarea><br>
 
       <button @submit.prevent="submitData">create</button>
     </form>
@@ -18,7 +18,6 @@ import { ref } from 'vue';
 import { useArticleStore } from '@/stores/article.js'
 
 const store = useArticleStore();
-
 const title = ref('');
 const content = ref('');
 
@@ -31,6 +30,7 @@ const submitData = function () {
   title.value = '';
   content.value = '';
 };
+
 
 </script>
 

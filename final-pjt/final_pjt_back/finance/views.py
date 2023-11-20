@@ -219,10 +219,17 @@ def savings(request):
 
 
 @api_view(['GET'])
+def detail(request, detail_pk):
+    products = DepositAndSavings.objects.get(pk=detail_pk)
+    serializer = DepositAndSavingsSerializer(products)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def exchange(request):
     url = f'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={EXCHANGE_API_KEY}&searchdate=20231117&data=AP01'
     response = requests.get(url).json()
     result = {}
     for li in response:
-        result[li['cur_unit']] = li['deal_bas_r']
+        result[li['cur_nm']] = li['deal_bas_r']
     return Response(result)
