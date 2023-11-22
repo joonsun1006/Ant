@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <h1>게시글 생성 페이지</h1>
+  <div class="container" id="container">
+    <h1 class="mb-4">게시글 생성 페이지</h1>
     <form @submit.prevent="submitData">
-      <label for="title">제목 : </label>
-      <input type="text" id="title" v-model="title"><br><br>
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" id="title" v-model="title" class="form-control">
+      </div>
 
-      <label for="content">내용 : </label>
-      <textarea id="content" v-model="content"></textarea><br>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea id="content" v-model="content" class="form-control"></textarea>
+      </div>
 
-      <button @submit.prevent="submitData">create</button>
+      <button type="submit" class="btn btn-primary">Create</button>
     </form>
   </div>
 </template>
@@ -35,5 +39,18 @@ const submitData = function () {
 </script>
 
 <style scoped>
+input {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 30em;
+  resize: none;
+}
+
+#container {
+  margin-top: 60px;
+}
 
 </style>

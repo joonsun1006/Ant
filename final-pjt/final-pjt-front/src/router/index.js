@@ -8,6 +8,11 @@ import ArticleListItem from '@/components/ArticleListItem.vue'
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import Exchange from '@/components/Exchange.vue'
 import Map from '@/components/Map.vue'
+import Test from '@/components/Test.vue'
+import TestMap from '@/components/TestMap.vue'
+import DepositView from '@/views/DepositView.vue'
+import SavingsView from '@/views/SavingsView.vue'
+import DnSDetailView from '@/views/DnSDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +33,7 @@ const router = createRouter({
       component: SignupView
     },
     {
-      path: '/user',
+      path: '/user/:user_pk',
       name: 'user',
       component: UserView
     },
@@ -57,6 +62,32 @@ const router = createRouter({
       name: 'map',
       component: Map
     },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
+    },
+    {
+      path: '/testmap',
+      name: 'testmap',
+      component: TestMap
+    },
+    {
+      path: '/deposit',
+      name: 'deposit',
+      component: DepositView
+    },
+    {
+      path: '/savings',
+      name: 'savings',
+      component: SavingsView
+    },
+    {
+      path: '/dnsdetail/:dns_pk',
+      name: 'dnsdetail',
+      component: DnSDetailView
+    },
+
   ]
 })
 

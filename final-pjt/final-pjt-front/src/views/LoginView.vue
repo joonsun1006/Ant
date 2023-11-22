@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <h1>로그인 뷰</h1>
-    <form @submit.prevent="login">
-      <label for="username">아이디 : </label>
-      <input type="text" id="username" v-model.trim="username"><br>
+  <div class="container mt-5">
+    <h1 class="mb-4 text-center">로고</h1>
+    <form @submit.prevent="login" class="col-md-6 mx-auto">
+      <div class="mb-3">
+        <label for="username" class="form-label">아이디:</label>
+        <input type="text" id="username" v-model.trim="username" class="form-control">
+      </div>
 
-      <label for="password">비밀번호 : </label>
-      <input type="password" id="password" v-model.trim="password"><br>
+      <div class="mb-3">
+        <label for="password" class="form-label">비밀번호:</label>
+        <input type="password" id="password" v-model.trim="password" class="form-control">
+      </div>
 
-      <input type="submit" value="LogIn">
+      <button type="submit" class="btn btn-primary">로그인</button>
     </form>
   </div>
 </template>

@@ -1,17 +1,31 @@
 from django.shortcuts import render
 from django.conf import settings
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework.response import Response
 from django.http import JsonResponse
 from .serializer import DepositAndSavingsSerializer
 from .models import DepositAndSavings
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
+from accounts.models import User
 import requests
+import pandas as pd
+import joblib
+import pickle
+
 # Create your views here.
 
 FINLIFE_API_KEY = settings.FINLIFE_API_KEY
 EXCHANGE_API_KEY = settings.EXCHANGE_API_KEY
 
+model_path = 'finance/mymodel.pkl'
+
+model = joblib.load(model_path)
+
+
+
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
 def dbupdate(request):
     #은행 예금 업데이트
     url = f'http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth={FINLIFE_API_KEY}&topFinGrpNo=020000&pageNo=1'
@@ -233,3 +247,48 @@ def exchange(request):
     for li in response:
         result[li['cur_nm']] = li['deal_bas_r']
     return Response(result)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+def recommend(request):
+    user = pd.DataFrame({'age': [request.user.age], 'money': [request.user.money], 'salary': [request.user.salary]})
+    financial_recommend_pk =  model.predict(user)
+    products = DepositAndSavings.objects.get(pk=financial_recommend_pk)
+    serializer = DepositAndSavingsSerializer(products)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+def addOrDeleteProducts(request, user_pk, dns_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    financial_products = user.financial_products
+    product = get_object_or_404(DepositAndSavings, pk=dns_pk)
+
+    if financial_products:
+        products = financial_products.split(',')
+        if str(product.pk) in products:
+            products.remove(str(product.pk))
+        else:
+            products.append(str(product.pk))
+    else:
+        products = [str(product.pk)]
+
+    if len(products) > 1:
+        financial_products = ','.join(products)
+    elif len(products) == 1:
+        financial_products = str(products[0])
+    else:
+        financial_products = ''
+    # User 객체를 수정하고 저장
+    user.financial_products = financial_products
+    user.save()
+
+    return Response({'message': 'ok'})
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+def registered_products(request, user_pk):
+    pass

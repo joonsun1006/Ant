@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <h1>환율계산기</h1>
-    <div>
-      <select v-model="selected">
+  <div id="container" class="container">
+    <h1 class="mb-4">환율 계산기</h1>
+    <div class="mb-3">
+      <label for="currency" class="form-label">통화 선택</label>
+      <select v-model="selected" class="form-select">
         <option v-for="key in Object.keys(exchange)">{{ key }}</option>
       </select>
-      <label for="won"> 원화 </label>
-      <input type="number" :value="won" @change="wonChange" id="won">
-
-
     </div>
-    <label for="foreign"> 대상 </label>
-    <input type="number" :value="foreign" @change="foreignChange" id="foreign">
-
+    <div class="mb-3">
+      <label for="won" class="form-label">원화</label>
+      <div class="input-group">
+        <input type="number" :value="won" @input="wonChange" class="form-control" id="won">
+        <span class="input-group-text">원</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="foreign" class="form-label">대상</label>
+      <div class="input-group">
+        <input type="number" :value="foreign" @input="foreignChange" class="form-control" id="foreign">
+        <span class="input-group-text">{{ selected }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,17 +47,19 @@ onMounted(() => {
 
 const wonChange = function (event) {
   won.value = event.target.value
-  console.log(won.value, exchange.value[selected.value])
   foreign.value = won.value / exchange.value[selected.value]
   foreign.value = foreign.value.toFixed(2)
 }
 
 const foreignChange = function (event) {
   foreign.value = event.target.value
-  console.log(won.value, foreign.value)
   won.value = foreign.value * exchange.value[selected.value]
   won.value = won.value.toFixed(2)
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+#container {
+  margin-top: 60px;
+}
+</style>

@@ -4,17 +4,12 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 export const useArticleStore = defineStore('article', () => {
-  // const count = ref(0)
-  // const doubleCount = computed(() => count.value * 2)
-  // function increment() {
-  //   count.value++
-  // }
 
-  const articles = ref([]);
-  const API_URL = 'http://127.0.0.1:8000';
-  const token = ref(null);
   const router = useRouter();
-  const userId = ref(null);
+  const API_URL = 'http://127.0.0.1:8000';
+  const articles = ref([])
+  const token = ref(null)
+  const userId = ref(null)
 
   const getArticles = () => {
     axios({
@@ -64,32 +59,38 @@ export const useArticleStore = defineStore('article', () => {
       .then((res) => {
         const password = password1;
         login({ username, password });
-        console.log(res);
         // router.push({ name: 'home' });
       })
       .catch((err) => {
-        console.log(payload)
-        console.log(err);
+        alert('필수 정보를 입력해주세요!');
       })
   };
 
   const login = (payload) => {
-    console.log(payload);
-    const { username, password, pk } = payload;
+    const { username, password } = payload;
     axios({
       method: 'post',
       url: `${API_URL}/accounts/login/`,
       data: {
-        username, password, pk
+        username, password
       }
     })
       .then((res) => {
         token.value = res.data.key;
-        console.log(res);
+        axios({
+          method:'get',
+          url: `${API_URL}/accounts/user/`,
+          headers: {
+            Authorization: `Token ${token.value}`
+          }
+        })
+        .then((res2) => {
+          userId.value = res2.data.pk
+        })
         router.push({ name: 'home' })
       })
       .catch((err) => {
-        console.log(err);
+        alert('잘못된 입력입니다!');
       })
   };
 
@@ -115,11 +116,14 @@ export const useArticleStore = defineStore('article', () => {
         console.log(err)
       })
   }
+
+
   
 
   return {
     articles, getArticles, createArticle,
     API_URL, signup, login,
-    token, isLogin, logout, userId
+    token, isLogin, logout, userId,
+
   }
 }, { persist: true })

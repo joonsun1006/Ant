@@ -1,33 +1,49 @@
 <template>
-  <div>
-    <h1>회원가입 뷰</h1>
+  <div class="container mt-5">
+    <h1 class="mb-4">회원가입</h1>
     <form @submit.prevent="signup">
-      <label for="username">아이디 : </label>
-      <input type="text" id="username" v-model.trim="username"><br>
+      <div>
+        <label for="username" class="form-label"></label>
+        <input type="text" placeholder="아이디" id="username" v-model.trim="username" class="form-control">
+      </div>
 
-      <label for="password1">비밀번호 : </label>
-      <input type="password" id="password1" v-model.trim="password1"><br>
+      <div>
+        <label for="password1" class="form-label"></label>
+        <input type="password" placeholder="비밀번호" id="password1" v-model.trim="password1" class="form-control">
+      </div>
 
-      <label for="password2">비밀번호 확인 : </label>
-      <input type="password" id="password2" v-model.trim="password2"><br>
+      <div class="mb-3">
+        <label for="password2" class="form-label"></label>
+        <input type="password" placeholder="비밀번호 확인" id="password2" v-model.trim="password2" class="form-control">
+      </div>
 
-      <!-- 닉네임, 이메일, 나이, 돈, 월급 -->
-      <label for="nickname">닉네임 : </label>
-      <input type="text" id="nickname" v-model.trim="nickname"><br>
+      <div>
+        <label for="nickname" class="form-label"></label>
+        <input type="text" placeholder="닉네임" id="nickname" v-model.trim="nickname" class="form-control">
+      </div>
       
-      <label for="email">이메일 : </label>
-      <input type="text" id="email" v-model.trim="email"><br>
+      <div class="mb-3">
+        <label for="email" class="form-label"></label>
+        <input type="text" placeholder="이메일" id="email" v-model.trim="email" class="form-control">
+      </div>
 
-      <label for="age">나이 : </label>
-      <input type="text" id="age" v-model.trim="age"><br>
-
-      <label for="money">돈 : </label>
-      <input type="text" id="money" v-model.trim="money"><br>
-
-      <label for="salery">연봉 : </label>
-      <input type="text" id="salery" v-model.trim="salary"><br>
-
-      <input type="submit" value="SignUp">
+      <p id="money-info">자산정보</p>
+      <div>
+        <label for="age" class="form-label"></label>
+        <input type="text" placeholder="나이" id="age" v-model.trim="age" class="form-control">
+      </div>
+      
+      <div>
+        <label for="money" class="form-label"></label>
+        <input type="text" placeholder="자산" id="money" v-model.trim="money" class="form-control">
+      </div>
+      
+      <div class="mb-3">
+        <label for="salery" class="form-label"></label>
+        <input type="text" placeholder="연봉" id="salery" v-model.trim="salary" class="form-control">
+      </div>
+      
+      <button type="submit" class="btn btn-primary">SignUp</button>
     </form>
   </div>
 </template>
@@ -63,5 +79,8 @@ const signup = function() {
 </script>
 
 <style scoped>
-
+#money-info {
+  padding-top: 20px;
+  margin-bottom: -15px;
+}
 </style>

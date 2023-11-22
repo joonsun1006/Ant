@@ -1,42 +1,48 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="text-center">
-      <div>
-        <p>{{article.id}}번 글</p>
-        <h1>제목: {{ article.title }}</h1>
-        <hr>
-        <p>작성일: {{ article.created_at }}</p>
-        <p>수정일: {{ article.updated_at }}</p>
-        <hr>
-        <p>내용: {{ article.content }}</p>
-        <hr>
-        <h3>댓글</h3>
-        <form @submit.prevent="createComment">
-          <label for="content">내용 : </label>
-          <input type="text" id="content" v-model="content">
-          <button>댓글 작성</button>
-        </form>
-        <p
-          v-for="comment in article.comment_set"
-          :key="comment.id"
-        >
+  <div class="container col-8" id="container">
+    <div class="card" id="card">
+      <div class="card-body">
+        <p class="card-text">{{ article.id }}번 글</p>
         
-        익명 : {{ comment.content }}
-        <p>comment.id : {{ comment.id }}</p>
+        <!-- 제목, 작성,수정일, 글내용 -->
+        <h1 class="card-title">제목: {{ article.title }}</h1>
         <div>
-          <button
-            @click="deleteComment(comment.id)"
-            
-          >
-            삭제
-          </button>
+          <p class="card-text text-end">작성: {{ article.created_at?.substr(0,10) }} {{ article.created_at?.substr(11,8) }}</p>
+          <p class="card-text text-end">수정: {{ article.updated_at?.substr(0,10) }} {{ article.created_at?.substr(11,8) }}</p>
         </div>
-        </p>
+        <p class="card-text" id="article-content">내용: {{ article.content }}</p>
+        <hr>
+
+        <!-- 댓글작성 폼 -->
+        <form @submit.prevent="createComment" class="mb-3 row">
+          <div class="col-10 col-md-11 mb-3">
+            <label for="content"></label>
+            <input type="text" placeholder="댓글을 입력하세요" id="content" v-model="content" class="form-control">
+          </div>
+          <div class="col-2 col-md-1" id="dm-button">
+            <button class="btn btn-primary mt-2"><img src="../assets/dm_icon.png" alt="dm"></button>
+          </div>
+        </form>
+
+        <!-- 댓글목록 -->
+        <div v-if="article.comment_set?.length > 0">
+          <div v-for="comment in article.comment_set" :key="comment.id" class="card mt-3">
+            <div class="card-body">
+              <p class="card-text">익명: {{ comment.content }}</p>
+              <p class="card-text">comment.id: {{ comment.id }}</p>
+              <div>
+                <button @click="deleteComment(comment.id)" class="btn btn-danger">삭제</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <p>아직 댓글이 없습니다.</p>
+        </div>
+        
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script setup>
@@ -80,19 +86,17 @@ const createComment = () => {
     }
   })
     .then((res) => {
-      console.log(res.data)
       return axios({
         method: 'get',
         url: `${API_URL}/articles/${route.params.article_pk}/`,
       })
       .then((res) => {
         router.go();
-        })
+      })
     })
 }
 
 const deleteComment = (comment_pk) => {
-  console.log(comment_pk)
   axios({
     method: 'delete',
     url: `${API_URL}/articles/comment/${comment_pk}/`,
@@ -118,5 +122,22 @@ const deleteComment = (comment_pk) => {
 </script>
 
 <style scoped>
+img {
+  width: 15px;
+}
+
+#dm-button {
+  margin-top: 15px;
+  padding-left: 1px;
+}
+
+#article-content {
+  width: 70%;
+  padding-top: 30px;
+}
+
+#container {
+  margin-top: 60px;
+}
 
 </style>

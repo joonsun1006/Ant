@@ -32,14 +32,16 @@ def article_detail(request, article_pk):
         return Response(serializer.data)
     
     elif request.method == 'DELETE':
-        article.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.user == article.user:
+            article.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
     
     elif request.method == 'PUT':
-        serializer = ArticleSerializer(article, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        if request.user == article.user:
+            serializer = ArticleSerializer(article, data=request.data, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data)
 
 
 @api_view(['DELETE'])
@@ -47,8 +49,9 @@ def article_detail(request, article_pk):
 def comment_detail(request, comment_pk):
     if request.method == 'DELETE':
         comment = get_object_or_404(Comment, pk=comment_pk)
-        comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.user == comment.user:
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 @api_view(['POST'])
