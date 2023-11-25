@@ -1,19 +1,19 @@
 <template>
-  
+  <div class="container" id="container">
+    <h3 class="mb-4">게시글 수정</h3>
     <div class="card">
       <div class="card-body">
         <p class="card-text">{{ article.id }}번 글</p>
         
         <!-- 제목, 작성,수정일, 글내용 -->
-        <h1 class="card-title">제목: <input type="text" v-model="title"></h1>
- 
-        <p class="card-text" id="article-content">내용: <input type="text" v-model="content"></p>
-        <hr> 
-        <button @click="updatepost">수정하기</button>
+        <h1 class="card-title">제목: <input type="text" v-model="title" class="form-control"></h1>
 
-        
+        <p class="card-text">내용: <textarea v-model="content" class="form-control" rows="5"></textarea></p>
+        <hr> 
+        <button @click="updatepost" class="btn btn-primary">수정하기</button>
+      </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script setup>
@@ -69,18 +69,8 @@ const updatepost = () => {
 </script>
 
 <style scoped>
-img {
-  width: 15px;
-}
-
-#dm-button {
-  margin-top: 15px;
-  padding-left: 1px;
-}
-
-#article-content {
-  width: 70%;
-  padding-top: 30px;
+#container {
+  margin-top: 100px;
 }
 
 </style>

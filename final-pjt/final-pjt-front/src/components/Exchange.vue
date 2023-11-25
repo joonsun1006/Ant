@@ -33,6 +33,8 @@ const exchange = ref({})
 const selected = ref('')
 const won = ref(0)
 const foreign = ref(0)
+const wonnocomma = ref(null)
+const foreignnomomma = ref(null)
 
 onMounted(() => {
   axios({
@@ -43,23 +45,53 @@ onMounted(() => {
     })
 })
 
+watch (selected, () => {
+  won.value = 0
+  foreign.value = 0
+})
+
+const wonOrForeign = ref(null)
 
 
 const wonChange = function (event) {
   won.value = event.target.value
+  if (exchange.value[selected.value].includes(',')) {
+    wonnocomma.value = exchange.value[selected.value].replaceAll(',', '');
+    foreign.value = won.value / wonnocomma.value
+    console.log(foreign.value)
+    foreign.value = foreign.value.toFixed(2)
+  return
+  }
   foreign.value = won.value / exchange.value[selected.value]
+  if (selected.value === '일본 옌' | selected.value === '인도네시아 루피아' & wonOrForeign.value === true){
+    foreign.value *= 100
+    wonOrForeign.value = false
+  }
   foreign.value = foreign.value.toFixed(2)
 }
 
 const foreignChange = function (event) {
   foreign.value = event.target.value
+  
+  if (exchange.value[selected.value].includes(',')) {
+    foreignnomomma.value = exchange.value[selected.value].replaceAll(',', '')
+    console.log(foreignnomomma.value)
+    won.value = foreign.value * foreignnomomma.value
+    won.value = won.value.toFixed(2)
+  return
+  }
   won.value = foreign.value * exchange.value[selected.value]
+  if (selected.value === '일본 옌' | selected.value === '인도네시아 루피아' & wonOrForeign.value === false){
+    won.value /= 100
+    wonOrForeign.value = true
+  }
   won.value = won.value.toFixed(2)
+
 }
 </script>
 
 <style scoped>
 #container {
-  margin-top: 60px;
+  margin-top: 100px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="container mt-5">
-    <h1 class="mb-4">회원가입</h1>
+  <div class="container" id="container">
+    <h1 class="mb-4 text-center">회원가입</h1>
     <form @submit.prevent="signup">
       <div>
         <label for="username" class="form-label"></label>
@@ -82,5 +82,9 @@ const signup = function() {
 #money-info {
   padding-top: 20px;
   margin-bottom: -15px;
+}
+
+#container {
+  margin-top: 70px;
 }
 </style>

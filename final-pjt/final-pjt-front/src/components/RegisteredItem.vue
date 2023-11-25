@@ -1,10 +1,10 @@
 <template>
 
     <div v-if="product.type === 1" @click="goDetail(register)">
-      <p >●(정기예금){{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</p>
+      <p class="text-center">(정기예금){{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</p>
     </div>
     <div v-if="product.type === 2" @click="goDetail(register)">
-      <p >●(정기적금){{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</p>
+      <p class="text-center">(정기적금){{ product.kor_co_nm }} - {{ product.fin_prdt_nm }}</p>
     </div>
 
 </template>
@@ -34,4 +34,9 @@ onMounted(() => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.text-center {
+  font-weight: bold;
+  padding-top: 10px;
+}
+</style>

@@ -55,8 +55,10 @@
         </tbody>
       </table>
     </div>
+    <button @click="addOrDelete" class="add-remove-button">
+      {{ buttonText }}
+    </button>
   </div>
-  <button @click="addOrDelete">추가 제거</button>
 </template>
 
 <script setup>
@@ -66,15 +68,28 @@ import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from '@/stores/article'
 const store = useArticleStore()
 const route = useRoute()
+const router = useRouter()
 const DnS = ref({})
+const buttonText = ref('추가');
+const user = ref(null)
+const registered = ref(null)
 const addOrDelete = function () {
   axios({
     method: 'get',
     url: `http://127.0.0.1:8000/finance/dnsaddordelete/${store.userId}/${route.params.dns_pk}/`
   })
-  .then((res) => {
-    console.log(res)
-  })
+    .then((res) => {
+
+      if (buttonText.value === '추가') {
+        buttonText.value = '제거';
+        alert('추가되었습니다.');
+        router.push({name: 'user', params: {user_pk : store.userId}}  )
+      }
+      else if (buttonText.value === '제거') {
+        buttonText.value = '추가';
+        alert('제거되었습니다.');
+      }
+    })
 }
 onMounted(() => {
   axios({
@@ -84,11 +99,32 @@ onMounted(() => {
     .then((res) => {
       DnS.value = res.data
     })
+  if (store.isLogin) {
+    axios({
+      method: 'get',
+      url: `http://127.0.0.1:8000/accounts/detail/${store.userId}/`,
+    })
+      .then((res) => {
+        user.value = res.data;
+        if (res.data.financial_products === '') {
+          registered.value = null
+        }
+        else {
+          registered.value = res.data.financial_products.split(',')
+        }
+        if (registered.value.includes(String(DnS.value.id))) {
+          buttonText.value = '제거';
+        }
+        else {
+          buttonText.value = '추가';
+        }
+      })
+  }
 })
 </script>
 <style scoped>
 #container {
-  margin-top: 60px;
+  margin-top: 100px;
 }
 
 .table th,
@@ -100,4 +136,20 @@ onMounted(() => {
   width: 30%;
 }
 
+.add-remove-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.add-remove-button:hover {
+  background-color: #45a049;
+}
 </style>

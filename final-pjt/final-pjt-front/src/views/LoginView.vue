@@ -1,6 +1,6 @@
 <template>
-  <div class="container mt-5">
-    <h1 class="mb-4 text-center">로고</h1>
+  <div class="container" id="container">
+    <h1 class="mb-4 text-center"><img src="../assets/logo.png" alt="로고"></h1>
     <form @submit.prevent="login" class="col-md-6 mx-auto">
       <div class="mb-3">
         <label for="username" class="form-label">아이디:</label>
@@ -38,5 +38,7 @@ const password = ref(null);
 </script>
 
 <style scoped>
-
+#container {
+  margin-top: 100px;
+}
 </style>

@@ -9,4 +9,5 @@ urlpatterns = [
     path('exchange-rate/', views.exchange),
     path('recommend/', views.recommend),
     path('dnsaddordelete/<int:user_pk>/<int:dns_pk>/', views.addOrDeleteProducts),
+    path('registered/<int:user_pk>/', views.registered_products),
 ]

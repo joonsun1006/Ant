@@ -26,7 +26,8 @@ const router = useRouter();
 }
 
 #container {
-  margin-top: 60px;
+  margin-top: 100px;
+  margin-bottom: 90px;
 }
 
 </style>

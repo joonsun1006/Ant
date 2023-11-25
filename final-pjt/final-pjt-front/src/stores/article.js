@@ -86,8 +86,8 @@ export const useArticleStore = defineStore('article', () => {
         })
         .then((res2) => {
           userId.value = res2.data.pk
+          router.push({ name: 'home' })
         })
-        router.push({ name: 'home' })
       })
       .catch((err) => {
         alert('잘못된 입력입니다!');
@@ -96,7 +96,7 @@ export const useArticleStore = defineStore('article', () => {
 
 
   const isLogin = computed(() => {
-    if(token.value === null) {
+    if(userId.value === null) {
       return false;
     } else {
       return true;
@@ -110,6 +110,7 @@ export const useArticleStore = defineStore('article', () => {
     })
       .then((res) => {
         token.value = null
+        userId.value = null
         router.push({ name: 'home' })
       })
       .catch((err) => {
@@ -118,12 +119,32 @@ export const useArticleStore = defineStore('article', () => {
   }
 
 
+  const passwordchange = (payload) => {
+    const {new_password1, new_password2} = payload
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/password/change/`,
+      data: {
+        new_password1, new_password2,
+      },
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(new_password1, new_password2)
+        console.log(err)
+      })
+  }
   
 
   return {
     articles, getArticles, createArticle,
     API_URL, signup, login,
-    token, isLogin, logout, userId,
+    token, isLogin, logout, userId, passwordchange
 
   }
 }, { persist: true })

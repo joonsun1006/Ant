@@ -3,8 +3,10 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import UserView from '@/views/UserView.vue'
+import UserUpdateView from '@/views/UserUpdateView.vue'
 import ArticleView from '@/views/ArticleView.vue'
 import ArticleListItem from '@/components/ArticleListItem.vue'
+import ArticleUpdateView from '@/views/ArticleUpdateView.vue'
 import ArticleCreateView from '@/views/ArticleCreateView.vue'
 import Exchange from '@/components/Exchange.vue'
 import Map from '@/components/Map.vue'
@@ -13,6 +15,8 @@ import TestMap from '@/components/TestMap.vue'
 import DepositView from '@/views/DepositView.vue'
 import SavingsView from '@/views/SavingsView.vue'
 import DnSDetailView from '@/views/DnSDetailView.vue'
+import ChartView from '@/views/ChartView.vue'
+import { useArticleStore } from '@/stores/article'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,7 +39,26 @@ const router = createRouter({
     {
       path: '/user/:user_pk',
       name: 'user',
-      component: UserView
+      component: UserView,
+      beforeEnter: (to, from) => {
+        const store = useArticleStore()
+        if (to.params.user_pk != store.userId) {
+          return { name: 'home'}
+        }
+      }
+    },
+    {
+      path: '/userupdate/:user_pk',
+      name: 'userupdate',
+      component: UserUpdateView,
+      beforeEnter: (to, from) => {
+        const store = useArticleStore()
+        // console.log(to.params)
+        // console.log(store.userId)
+        if (to.params.user_pk != store.userId) {
+          return { name: 'home'}
+        }
+      }
     },
     {
       path: '/articles',
@@ -87,7 +110,16 @@ const router = createRouter({
       name: 'dnsdetail',
       component: DnSDetailView
     },
-
+    {
+      path: '/articleupdate/:article_pk',
+      name: 'articleupdate',
+      component: ArticleUpdateView
+    },
+    {
+      path: '/chart',
+      name: 'chart',
+      component: ChartView
+    },
   ]
 })
 

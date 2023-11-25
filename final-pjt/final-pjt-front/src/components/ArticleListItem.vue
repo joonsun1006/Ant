@@ -7,6 +7,10 @@
         <!-- 제목, 작성,수정일, 글내용 -->
         <h1 class="card-title">제목: {{ article.title }}</h1>
         <div>
+          <div v-if="article.user === store.userId" class="d-flex justify-content-end">
+            <button @click="deleteArticle(article.pk)" class="btn btn-danger">삭제</button>
+            <button @click="router.push({name: 'articleupdate', params: { article_pk: article.pk }})" class="btn btn-primary">수정</button>
+          </div>
           <p class="card-text text-end">작성: {{ article.created_at?.substr(0,10) }} {{ article.created_at?.substr(11,8) }}</p>
           <p class="card-text text-end">수정: {{ article.updated_at?.substr(0,10) }} {{ article.created_at?.substr(11,8) }}</p>
         </div>
@@ -29,7 +33,6 @@
           <div v-for="comment in article.comment_set" :key="comment.id" class="card mt-3">
             <div class="card-body">
               <p class="card-text">익명: {{ comment.content }}</p>
-              <p class="card-text">comment.id: {{ comment.id }}</p>
               <div>
                 <button @click="deleteComment(comment.id)" class="btn btn-danger">삭제</button>
               </div>
@@ -39,7 +42,6 @@
         <div v-else>
           <p>아직 댓글이 없습니다.</p>
         </div>
-        
       </div>
     </div>
   </div>
@@ -115,8 +117,24 @@ const deleteComment = (comment_pk) => {
       article.value = res.data;
     })
     .catch((err) => {
-      console.error(err);
+      alert('본인이 작성한 댓글만 삭제할 수 있습니다');
     });
+}
+
+const deleteArticle = (article_pk) => {
+  axios({
+    method: 'delete',
+    url:`${API_URL}/articles/${route.params.article_pk}/`,
+    headers: {
+      Authorization: `Token ${token.value}`
+    },
+  })
+  .then(() => {
+    return router.push({name: 'articles'})
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 }
 
 </script>
@@ -137,7 +155,7 @@ img {
 }
 
 #container {
-  margin-top: 60px;
+  margin-top: 100px;
 }
 
 </style>

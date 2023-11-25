@@ -4,17 +4,16 @@
     <div v-for="article in sortedArticles" :key="article.pk" class="card mb-3">
       <div class="card-body d-flex justify-content-between align-items-center">
         <h5 class="card-title col-8">
-          <span>{{ article.pk }}. </span>
           <RouterLink
             :to="{ name: 'articleListItem', params: { article_pk: article.pk } }"
-            class="text-decoration-none"
+            class="link-text"
             v-if="article.title.length < 15"
           >
             {{ article.title }}
           </RouterLink>
           <RouterLink
             :to="{ name: 'articleListItem', params: { article_pk: article.pk } }"
-            class="text-decoration-none"
+            class="link-text"
             v-if="article.title.length >= 15"
           >
             {{ article.title.substr(0, 15) }}...
@@ -83,5 +82,13 @@ watch(() => store.articles, () => {
 
 img {
   width: 15px;
+}
+.link-text {
+  color: black;
+  text-decoration: none;
+}
+
+.link-text:hover {
+  text-decoration: underline;
 }
 </style>

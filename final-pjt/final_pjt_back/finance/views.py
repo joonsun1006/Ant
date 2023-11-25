@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from django.conf import settings
 from rest_framework.decorators import api_view, authentication_classes
-from django.shortcuts import get_list_or_404, get_object_or_404
+from django.shortcuts import  get_object_or_404
 from rest_framework.response import Response
-from django.http import JsonResponse
 from .serializer import DepositAndSavingsSerializer
 from .models import DepositAndSavings
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -241,7 +239,7 @@ def detail(request, detail_pk):
 
 @api_view(['GET'])
 def exchange(request):
-    url = f'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={EXCHANGE_API_KEY}&searchdate=20231117&data=AP01'
+    url = f'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={EXCHANGE_API_KEY}&searchdate=20231124&data=AP01'
     response = requests.get(url).json()
     result = {}
     for li in response:
@@ -291,4 +289,9 @@ def addOrDeleteProducts(request, user_pk, dns_pk):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 def registered_products(request, user_pk):
-    pass
+    user = get_object_or_404(User, pk=user_pk)
+    financial_products = user.financial_products
+    products = financial_products.split(',')
+    my_products = DepositAndSavings.objects.filter(pk__in = products)
+    serializer = DepositAndSavingsSerializer(my_products, many=True)
+    return Response(serializer.data)
